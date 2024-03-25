@@ -10,16 +10,20 @@ export default function Search({loadUser}: SearchProps) {
     const [userName, setUserName] = useState("")
 
     return(
-        <div>
+        <div className="bg-blue-950 p-8 rounded-2xl flex flex-col items-center justify-center gap-4 mb-6">
             <h2 className="text-4xl font-semibold">Busque por um usuário:</h2>
-            <p>Conheça seus melhores repositórios</p>
-            <div>
+            <p className="text-gray-400">Conheça seus melhores repositórios</p>
+            <div className="flex gap-2">
                 <input 
                     type="text" 
                     placeholder="Digite o nome do usuário"
                     onChange={(e) => setUserName(e.target.value)}
+                    className="p-1.5 rounded-md border-none text-blue-900"
                 />
-                <button onClick={() => loadUser(userName)}>
+                <button 
+                    onClick={() => loadUser(userName)}
+                    className="p-1.5 rounded-md border-none text-blue-900 bg-black/70 cursor-pointer"
+                >
                     <BsSearch />
                 </button>
             </div>
