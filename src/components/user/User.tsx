@@ -1,10 +1,9 @@
 import { UserProps } from "../../types/user"
+import { OnClickProps } from "../../types/onClick"
 
 import { MdLocationPin } from "react-icons/md"
 
-import { Link } from "react-router-dom"
-
-export default function User({ login, avatar_url, followers, following, location }: UserProps) {
+export default function User({ login, avatar_url, followers, following, location, onClick }: UserProps & OnClickProps) {
     return(
         <div className="bg-blue-950 p-8 rounded-2xl flex flex-col items-center justify-center gap-4">
             <img 
@@ -29,7 +28,7 @@ export default function User({ login, avatar_url, followers, following, location
                     <p className="bg-green-300 px-2 py-1 rounded">{following}</p>
                 </div>
             </div>
-            <Link className="p-4 bg-purple-700 rounded-md text-center opacity-80 hover:opacity-100 transition-all duration-300" to={`/repos/${login}`}>Ver melhores projetos</Link>
+            <button className="p-4 bg-purple-700 rounded-md text-center opacity-80 hover:opacity-100 transition-all duration-300" onClick={onClick}>Ver melhores projetos</button>
         </div>
     )
 }
