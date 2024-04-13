@@ -13,6 +13,7 @@ export default function Home() {
     const [topRepos, setTopRepos] = useState<RepoProps[]>([])
     const [error, setError] = useState(false)
     const [name, setName] = useState('')
+    const [apiFullError, setApiFullError] = useState(false)
 
     const loadUser = async (userName: string) => {
         setError(false)
@@ -25,6 +26,11 @@ export default function Home() {
 
         if(response.status == 404) {
             setError(true)
+            return
+        }
+
+        if (response.status == 403) {
+            setApiFullError(true)
             return
         }
 
@@ -73,6 +79,7 @@ export default function Home() {
                     onClick={loadTopRepos}
                 />}
             {error && <Error/>  }
+            {apiFullError && <p className=" text-red-600"> 🥺  Limite de requisições da API atingido, tente novamente mais tarde</p>}
             <div className="flex flex-col gap-5 mt-5">
                 {topRepos.map(repo => (
                     <RepositoriesCard
