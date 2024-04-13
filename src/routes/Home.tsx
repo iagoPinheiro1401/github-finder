@@ -4,6 +4,7 @@ import { RepoProps } from "../types/repo"
 import Search from "../components/search/Search"
 import User from "../components/user/User"
 import Error from "../components/error/Error"
+import RepositoriesCard from "../components/repositoriesCard/RepositoriesCard"
 
 import { useState } from "react"
 
@@ -11,10 +12,13 @@ export default function Home() {
     const [user, setUser] = useState<UserProps | null>(null)
     const [topRepos, setTopRepos] = useState<RepoProps[]>([])
     const [error, setError] = useState(false)
+    const [name, setName] = useState('')
 
     const loadUser = async (userName: string) => {
         setError(false)
         setUser(null)
+        setName('')
+        setTopRepos([])
 
         const response = await fetch(`https://api.github.com/users/${userName}`)
         const data = await response.json()
@@ -33,17 +37,18 @@ export default function Home() {
             following,
         }
         setUser(userData)
+        setName(userName)
     }
 
     const loadTopRepos = async () => {
         try {
           setTopRepos([])  
-          const response = await fetch(`https://api.github.com/users/iagoPinheiro1401/repos`)
+          const response = await fetch(`https://api.github.com/users/${name}/repos`)
           const reposData: RepoProps[] = await response.json()
   
           const reposWithCommits = await Promise.all(
             reposData.map(async repo => {
-              const commitsResponse = await fetch(`https://api.github.com/repos/iagoPinheiro1401/${repo.name}/commits`);
+              const commitsResponse = await fetch(`https://api.github.com/repos/${name}/${repo.name}/commits`);
               const commitsData = await commitsResponse.json();
               return { ...repo, commitsCount: commitsData.length };
             })
@@ -68,14 +73,15 @@ export default function Home() {
                     onClick={loadTopRepos}
                 />}
             {error && <Error/>  }
-            <div>
+            <div className="flex flex-col gap-5 mt-5">
                 {topRepos.map(repo => (
-                    <div key={repo.id}>
-                    <p>Name: {repo.name}</p>
-                    <p>URL: {repo.html_url}</p>
-                    <p>Language: {repo.language}</p>
-                    <p>Commits Count: {repo.commitsCount}</p>
-                    </div>
+                    <RepositoriesCard
+                        key={repo.id}
+                        name={repo.name}
+                        html_url={repo.html_url}
+                        language={repo.language}
+                        commitsCount={repo.commitsCount}
+                    />
                 ))}
             </div>
         </div>
