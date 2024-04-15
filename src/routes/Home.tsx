@@ -88,6 +88,8 @@ export default function Home() {
                         html_url={repo.html_url}
                         language={repo.language}
                         commitsCount={repo.commitsCount}
+                        created_at={repo.created_at}
+                        update_at={repo.update_at}
                     />
                 ))}
             </div>

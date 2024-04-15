@@ -4,4 +4,6 @@ export type RepoProps = {
     language: string;
     id?: string;
     commitsCount: number;
+    created_at: Date;
+    update_at: Date;
 }
